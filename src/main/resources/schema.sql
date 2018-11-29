@@ -2,132 +2,74 @@
 
 -- Таблица Организация
 CREATE TABLE IF NOT EXISTS Organization (
-    -- id первичный ключ таблицы Организации с автоинкриментом
-    id                  INTEGER  PRIMARY KEY AUTO_INCREMENT,
-
-    -- имя организации
-    name                VARCHAR(50) NOT NULL,
-
-    -- полное имя организации
-    name_full           VARCHAR(50) NOT NULL,
-
-    -- адрес организации
-    address             VARCHAR(50) NOT NULL,
-
-    -- ИНН организации
-    inn                 VARCHAR(30) UNIQUE NOT NULL,
-
-    -- КПП организации
-    kpp                 VARCHAR(30) UNIQUE NOT NULL,
-
-    -- Телефон организации
-    phone               VARCHAR(30),
-
-    -- Статус организации: true - активна, false - не активна
-    is_active           BOOLEAN
+    id                  INTEGER              COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+    name                VARCHAR(50) NOT NULL COMMENT 'имя организации',
+    name_full           VARCHAR(50) NOT NULL COMMENT 'полное имя организации',
+    address             VARCHAR(50) NOT NULL COMMENT 'адрес организации',
+    inn                 VARCHAR(30) NOT NULL COMMENT 'ИНН организации' UNIQUE ,
+    kpp                 VARCHAR(30) NOT NULL COMMENT 'КПП организации' UNIQUE ,
+    phone               VARCHAR(30)          COMMENT 'телефон организации',
+    is_active           BOOLEAN              COMMENT 'Статус организации: true - активна, false - не активна'
 );
+COMMENT ON TABLE Organization IS 'Таблица Организация';
 
 
 -- Таблица Офис
 CREATE TABLE IF NOT EXISTS Office (
 
-    -- id первичный ключ таблицы Офис с автоинкриментом
-    id                  INTEGER  PRIMARY KEY AUTO_INCREMENT,
-
-    -- нормер id из таблицы Organization
-    organization_id     INTEGER NOT NULL,
-
-    -- Имя офиса
-    name                VARCHAR(30) NOT NULL,
-
-    -- адрес Офиса
-    address             VARCHAR(50) NOT NULL,
-
-    -- телефон Офиса
-    phone               VARCHAR(30),
-
-    -- Статус офиса: true - активен, false - не активен
-    is_active           BOOLEAN
+    id                  INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+    organization_id     INTEGER NOT NULL      COMMENT 'нормер id из таблицы Organization',
+    name                VARCHAR(30) NOT NULL  COMMENT 'имя офиса',
+    address             VARCHAR(50) NOT NULL  COMMENT 'адрес Офиса',
+    phone               VARCHAR(30)           COMMENT 'телефон Офиса',
+    is_active           BOOLEAN               COMMENT 'Статус офиса: true - активен, false - не активен'
 );
+COMMENT ON TABLE Office IS 'Таблица Офис';
+
 
 
 -- Таблица Работник
 CREATE TABLE IF NOT EXISTS Employee (
-
-    -- id первичный ключ таблицы Работник с автоинкриментом
-    id                  INTEGER  PRIMARY KEY AUTO_INCREMENT,
-
-    -- нормер id из таблицы Office
-    office_id           INTEGER NOT NULL,
-
-    -- Имя работника
-    first_name          VARCHAR(50) NOT NULL,
-
-    -- среднее, второе имя работника
-    middle_name         VARCHAR(50),
-
-    -- фамилия работника
-    last_name           VARCHAR(50),
-
-    -- телефон работника
-    phone               VARCHAR(30) UNIQUE,
-
-    -- номер документа работника
-    doc_number          VARCHAR(50) UNIQUE,
-
-    -- дата документа работника
-    doc_date            DATE,
-
-    -- нормер id из таблицы Doc_code
-    doc_code_id         INTEGER,
-
-    -- нормер id из таблицы Citizenship
-    citizenship_id      INTEGER,
-
-    -- нормер id из таблицы Position
-    position_id         INTEGER NOT NULL,
-
-    -- Статус работника: true - идентифицируется, false - не идентифицируется
-    is_identified       BOOLEAN
+    id                  INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+    office_id           INTEGER     NOT NULL  COMMENT 'нормер id из таблицы Office',
+    first_name          VARCHAR(50) NOT NULL  COMMENT 'имя работника',
+    middle_name         VARCHAR(50)           COMMENT 'среднее, второе имя работника',
+    last_name           VARCHAR(50)           COMMENT 'фамилия работника',
+    phone               VARCHAR(30)           COMMENT 'телефон работника'         UNIQUE,
+    doc_number          VARCHAR(50)           COMMENT 'номер документа работника' UNIQUE,
+    doc_date            DATE                  COMMENT 'дата документа работника',
+    doc_code_id         INTEGER               COMMENT 'нормер id из таблицы Doc_code',
+    citizenship_id      INTEGER               COMMENT 'нормер id из таблицы Citizenship',
+    position_id         INTEGER     NOT NULL  COMMENT 'нормер id из таблицы Position',
+    is_identified       BOOLEAN               COMMENT 'Статус работника: true - идентифицируется, false - не идентифицируется'
 );
-
+COMMENT ON TABLE Employee IS 'Таблица Работник';
 
 -- Таблица Код-документа
 CREATE TABLE IF NOT EXISTS Doc_code (
-
-    -- id первичный ключ таблицы Код-документа с автоинкриментом
-    id                  INTEGER  PRIMARY KEY AUTO_INCREMENT,
-
-    -- тип документа
-    name                VARCHAR(100) NOT NULL,
-
-    -- код документа
-    code                INTEGER UNIQUE NOT NULL,
+    id                  INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+    name                VARCHAR(100) NOT NULL COMMENT 'тип документа',
+    code                INTEGER      NOT NULL COMMENT 'код документа' UNIQUE ,
 );
+COMMENT ON TABLE Doc_code IS 'Таблица Код-документа';
+
 
 -- Таблица Гражданство
 CREATE TABLE IF NOT EXISTS Citizenship (
-
-    -- id первичный ключ таблицы Гражданство с автоинкриментом
-    id                  INTEGER  PRIMARY KEY AUTO_INCREMENT,
-
-    -- наименование гражданства
-    name                VARCHAR(100) NOT NULL,
-
-    -- код гражданства
-    code                INTEGER UNIQUE NOT NULL,
+    id                  INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+    name                VARCHAR(100) NOT NULL COMMENT 'наименование гражданства',
+    code                INTEGER      NOT NULL COMMENT 'код гражданства' UNIQUE,
 );
+COMMENT ON TABLE Citizenship IS 'Таблица Гражданство';
 
 
 -- Таблица должность
 CREATE TABLE IF NOT EXISTS Position (
-
-    -- id первичный ключ таблицы Код-документа с автоинкриментом
-    id                  INTEGER  PRIMARY KEY AUTO_INCREMENT,
-
-    -- наименование должности
-    name                VARCHAR(50) NOT NULL,
+    id                  INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+    name                VARCHAR(50) NOT NULL  COMMENT 'наименование должности',
 );
+COMMENT ON TABLE Position IS 'Таблица должность';
+
 
 -- индексы таблицы Organization
 CREATE INDEX IX_Organization_id         ON Organization(id);
@@ -156,4 +98,5 @@ ALTER TABLE Employee ADD FOREIGN KEY (office_id)       REFERENCES Office(id);
 ALTER TABLE Employee ADD FOREIGN KEY (doc_code_id)     REFERENCES Doc_code(id);
 ALTER TABLE Employee ADD FOREIGN KEY (citizenship_id)  REFERENCES Citizenship(id);
 ALTER TABLE Employee ADD FOREIGN KEY (position_id)     REFERENCES Position(id);
+
 
