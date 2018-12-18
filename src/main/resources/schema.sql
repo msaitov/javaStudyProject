@@ -2,18 +2,18 @@
 
 -- Таблица Организация
 CREATE TABLE IF NOT EXISTS Organization (
-    id        INTEGER              COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
-    version   INTEGER     NOT NULL
-    COMMENT 'Служебное поле hibernate',
-    name      VARCHAR(50) NOT NULL
-    COMMENT 'наименование организации',
-    name_full VARCHAR(50) NOT NULL
-    COMMENT 'полное название организации',
-    address   VARCHAR(50) NOT NULL COMMENT 'адрес организации',
-    inn       VARCHAR(30) NOT NULL COMMENT 'ИНН организации' UNIQUE ,
-    kpp       VARCHAR(30) NOT NULL COMMENT 'КПП организации' UNIQUE ,
-    phone     VARCHAR(30)          COMMENT 'телефон организации',
-    is_active BOOLEAN COMMENT 'Статус организации: true - активен, false - не активен'
+  id        INTEGER              COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+  version   INTEGER     NOT NULL
+  COMMENT 'Служебное поле hibernate',
+  name      VARCHAR(50) NOT NULL
+  COMMENT 'наименование организации',
+  name_full VARCHAR(50) NOT NULL
+  COMMENT 'полное название организации',
+  address   VARCHAR(50) NOT NULL COMMENT 'адрес организации',
+  inn       VARCHAR(30) NOT NULL COMMENT 'ИНН организации' UNIQUE ,
+  kpp       VARCHAR(30) NOT NULL COMMENT 'КПП организации' UNIQUE ,
+  phone     VARCHAR(30)          COMMENT 'телефон организации',
+  is_active BOOLEAN COMMENT 'Статус организации: true - активен, false - не активен'
 );
 COMMENT ON TABLE Organization IS 'Таблица Организация';
 
@@ -21,16 +21,16 @@ COMMENT ON TABLE Organization IS 'Таблица Организация';
 -- Таблица Офис
 CREATE TABLE IF NOT EXISTS Office (
 
-    id              INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
-    version         INTEGER     NOT NULL
-    COMMENT 'Служебное поле hibernate',
-    organization_id INTEGER     NOT NULL
-    COMMENT 'нормер id из таблицы organization',
-    name            VARCHAR(30) NOT NULL
-    COMMENT 'наименование Офиса',
-    address         VARCHAR(50) NOT NULL  COMMENT 'адрес Офиса',
-    phone           VARCHAR(30)           COMMENT 'телефон Офиса',
-    is_active       BOOLEAN               COMMENT 'Статус офиса: true - активен, false - не активен'
+  id              INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+  version         INTEGER     NOT NULL
+  COMMENT 'Служебное поле hibernate',
+  organization_id INTEGER     NOT NULL
+  COMMENT 'нормер id из таблицы organization',
+  name            VARCHAR(30) NOT NULL
+  COMMENT 'наименование Офиса',
+  address         VARCHAR(50) NOT NULL  COMMENT 'адрес Офиса',
+  phone           VARCHAR(30)           COMMENT 'телефон Офиса',
+  is_active       BOOLEAN               COMMENT 'Статус офиса: true - активен, false - не активен'
 );
 COMMENT ON TABLE Office IS 'Таблица Офис';
 
@@ -38,20 +38,20 @@ COMMENT ON TABLE Office IS 'Таблица Офис';
 
 -- Таблица Работник
 CREATE TABLE IF NOT EXISTS Employee (
-    id             INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
-    version        INTEGER     NOT NULL
-    COMMENT 'Служебное поле hibernate',
-    office_id      INTEGER     NOT NULL  COMMENT 'нормер id из таблицы Office',
-    first_name     VARCHAR(50) NOT NULL  COMMENT 'имя работника',
-    middle_name    VARCHAR(50)           COMMENT 'среднее, второе имя работника',
-    last_name      VARCHAR(50)           COMMENT 'фамилия работника',
-    phone          VARCHAR(30)           COMMENT 'телефон работника'         UNIQUE,
-    doc_number     VARCHAR(50)           COMMENT 'номер документа работника' UNIQUE,
-    doc_date            DATE                  COMMENT 'дата документа работника',
-    doc_code_id         INTEGER               COMMENT 'нормер id из таблицы Doc_code',
-    citizenship_id INTEGER               COMMENT 'нормер id из таблицы Citizenship',
-    position_id    INTEGER     NOT NULL  COMMENT 'нормер id из таблицы Position',
-    is_identified  BOOLEAN               COMMENT 'Статус работника: true - идентифицируется, false - не идентифицируется'
+  id             INTEGER               COMMENT 'первичный ключ с автоинкриментом' PRIMARY KEY AUTO_INCREMENT,
+  version        INTEGER     NOT NULL
+  COMMENT 'Служебное поле hibernate',
+  office_id      INTEGER     NOT NULL  COMMENT 'нормер id из таблицы Office',
+  first_name     VARCHAR(50) NOT NULL  COMMENT 'имя работника',
+  middle_name    VARCHAR(50)           COMMENT 'среднее, второе имя работника',
+  last_name      VARCHAR(50)           COMMENT 'фамилия работника',
+  phone          VARCHAR(30)           COMMENT 'телефон работника'         UNIQUE,
+  doc_number     VARCHAR(50)           COMMENT 'номер документа работника' UNIQUE,
+  doc_date       DATE COMMENT 'дата документа работника',
+  doc_code_id    INTEGER COMMENT 'нормер id из таблицы Doc_code',
+  citizenship_id INTEGER               COMMENT 'нормер id из таблицы Citizenship',
+  position_id    INTEGER     NOT NULL  COMMENT 'нормер id из таблицы Position',
+  is_identified  BOOLEAN               COMMENT 'Статус работника: true - идентифицируется, false - не идентифицируется'
 );
 COMMENT ON TABLE Employee IS 'Таблица Работник';
 

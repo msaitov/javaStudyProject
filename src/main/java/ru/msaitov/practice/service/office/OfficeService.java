@@ -26,4 +26,21 @@ public interface OfficeService {
      */
     OfficeView loadById(Long id);
 
+    /**
+     * Обновление Office
+     *
+     * @param officeView
+     * @return
+     */
+    String update(OfficeView officeView);
+
+    /**
+     * Сохранение Office
+     *
+     * @param officeView
+     * @return
+     */
+    String save(OfficeView officeView);
+
+
 }

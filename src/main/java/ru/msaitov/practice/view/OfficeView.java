@@ -1,6 +1,7 @@
 package ru.msaitov.practice.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Вывод данных EmployeeView
@@ -16,6 +17,7 @@ public class OfficeView {
     /**
      * Идентификатор Организации
      */
+    @JsonProperty("orgId")
     private Long organizationId;
 
     /**

@@ -36,7 +36,9 @@ public class OrganizationServiceImpl implements OrganizationService {
             return null;
         }
 
-        List<Organization> organizationList = organizationDao.getItems(organizationView);
+        Organization organization = mapperFacade.map(organizationView, Organization.class);
+
+        List<Organization> organizationList = organizationDao.getItems(organization);
         for (Organization org : organizationList) {
             org.setNameFull(null);
             org.setAddress(null);
@@ -55,5 +57,25 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationView loadById(final Long id) {
         Organization organization = organizationDao.getItemById(id);
         return mapperFacade.map(organization, OrganizationView.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public String update(final OrganizationView organizationView) {
+        Organization organization = mapperFacade.map(organizationView, Organization.class);
+        return organizationDao.updateItem(organization);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public String save(final OrganizationView organizationView) {
+        Organization organization = mapperFacade.map(organizationView, Organization.class);
+        return organizationDao.add(organization);
     }
 }

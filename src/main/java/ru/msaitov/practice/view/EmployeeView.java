@@ -1,6 +1,7 @@
 package ru.msaitov.practice.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 
@@ -53,6 +54,7 @@ public class EmployeeView {
     /**
      * Код-документа
      */
+    @JsonProperty("docCode")
     private Long docCodeNum;
 
     /**
@@ -73,6 +75,7 @@ public class EmployeeView {
     /**
      * наименование должности
      */
+    @JsonProperty("position")
     private String positionName;
 
     /**
@@ -144,6 +147,7 @@ public class EmployeeView {
     public void setDocDate(LocalDate docDate) {
         this.docDate = docDate;
     }
+
 
     public Long getDocCodeNum() {
         return docCodeNum;

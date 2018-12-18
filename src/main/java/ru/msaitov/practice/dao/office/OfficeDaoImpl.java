@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.msaitov.practice.model.Office;
 import ru.msaitov.practice.model.Office_;
-import ru.msaitov.practice.view.OfficeView;
+import ru.msaitov.practice.model.Organization;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class OfficeDaoImpl implements OfficeDao {
      * {@inheritDoc}
      */
     @Override
-    public List<Office> getItems(final OfficeView officeView) {
+    public List<Office> getItems(final Office office) {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Office> cq = cb.createQuery(Office.class);
@@ -40,17 +42,18 @@ public class OfficeDaoImpl implements OfficeDao {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (officeView.getOrganizationId() != null) {
-            predicates.add(cb.equal(officeRoot.get(Office_.organization), officeView.getOrganizationId()));
+        Long orgId = office.getOrganization().getId();
+        if (orgId != null) {
+            predicates.add(cb.equal(officeRoot.get(Office_.organization), orgId));
         }
-        if (officeView.getName() != null) {
-            predicates.add(cb.equal(officeRoot.get(Office_.name), officeView.getName()));
+        if (office.getName() != null) {
+            predicates.add(cb.equal(officeRoot.get(Office_.name), office.getName()));
         }
-        if (officeView.getPhone() != null) {
-            predicates.add(cb.equal(officeRoot.get(Office_.phone), officeView.getPhone()));
+        if (office.getPhone() != null) {
+            predicates.add(cb.equal(officeRoot.get(Office_.phone), office.getPhone()));
         }
-        if (officeView.getIsActive() != null) {
-            predicates.add(cb.equal(officeRoot.get(Office_.isActive), officeView.getIsActive()));
+        if (office.getIsActive() != null) {
+            predicates.add(cb.equal(officeRoot.get(Office_.isActive), office.getIsActive()));
         }
 
         cq.where(predicates.toArray(new Predicate[]{}));
@@ -71,6 +74,68 @@ public class OfficeDaoImpl implements OfficeDao {
 
         cq.where(cb.equal(organizationRoot.get(Office_.id), id));
         TypedQuery<Office> q = em.createQuery(cq);
-        return q.getSingleResult();
+        Office office = null;
+        try {
+            office = q.getSingleResult();
+        } catch (NoResultException e) {
+
+        }
+        return office;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String updateItem(Office office) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaUpdate<Office> crUpdate = cb.createCriteriaUpdate(Office.class);
+        Root<Office> organizationRoot = crUpdate.from(Office.class);
+
+        crUpdate.set(Office_.name, office.getName());
+        crUpdate.set(Office_.address, office.getAddress());
+
+        Long organizationId = office.getOrganization().getId();
+        if (organizationId != null) {
+            Organization organization = em.find(Organization.class, organizationId);
+            crUpdate.set(Office_.organization, organization);
+        }
+
+        if (office.getPhone() != null) {
+            crUpdate.set(Office_.phone, office.getPhone());
+        }
+
+        if (office.getIsActive() != null) {
+            crUpdate.set(Office_.isActive, office.getIsActive());
+        }
+
+        crUpdate.where(cb.equal(organizationRoot.get(Office_.id), office.getId()));
+
+        String result;
+        int resultInt = em.createQuery(crUpdate).executeUpdate();
+        if (resultInt >= 1) {
+            result = "success";
+        } else {
+            result = "failure";
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String add(Office office) {
+        Organization organization = em.find(Organization.class, office.getOrganization().getId());
+        office.setOrganization(organization);
+        em.persist(office);
+        String result;
+        if (office.getId() != null) {
+            result = "success";
+        } else {
+            result = "failure";
+        }
+        return result;
     }
 }

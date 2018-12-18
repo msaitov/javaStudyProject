@@ -1,6 +1,7 @@
 package ru.msaitov.practice.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Вывод данных OrganizationView
@@ -21,6 +22,7 @@ public class OrganizationView {
     /**
      * полное название организации
      */
+    @JsonProperty("fullName")
     private String nameFull;
 
     /**
@@ -112,4 +114,6 @@ public class OrganizationView {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
+
+
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.msaitov.practice.dao.office.OfficeDao;
 import ru.msaitov.practice.model.Office;
+import ru.msaitov.practice.model.Organization;
 import ru.msaitov.practice.model.mapper.MapperFacade;
 import ru.msaitov.practice.view.OfficeView;
 
@@ -36,11 +37,18 @@ public class OfficeServiceImpl implements OfficeService {
             return null;
         }
 
-        List<Office> officeList = officeDao.getItems(officeView);
-        for (Office office : officeList) {
-            office.setOrganization(null);
-            office.setAddress(null);
-            office.setPhone(null);
+        Office office = mapperFacade.map(officeView, Office.class);
+
+        Organization organization = new Organization();
+        organization.setId(officeView.getOrganizationId());
+
+        office.setOrganization(organization);
+
+        List<Office> officeList = officeDao.getItems(office);
+        for (Office officeDoFieldsNull : officeList) {
+            officeDoFieldsNull.setOrganization(null);
+            officeDoFieldsNull.setAddress(null);
+            officeDoFieldsNull.setPhone(null);
         }
         return mapperFacade.mapAsList(officeList, OfficeView.class);
     }
@@ -53,5 +61,31 @@ public class OfficeServiceImpl implements OfficeService {
     public OfficeView loadById(final Long id) {
         Office office = officeDao.getItemById(id);
         return mapperFacade.map(office, OfficeView.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public String update(final OfficeView officeView) {
+        Office office = mapperFacade.map(officeView, Office.class);
+        Organization organization = new Organization();
+        organization.setId(officeView.getOrganizationId());
+        office.setOrganization(organization);
+        return officeDao.updateItem(office);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public String save(final OfficeView officeView) {
+        Office office = mapperFacade.map(officeView, Office.class);
+        Organization organization = new Organization();
+        organization.setId(officeView.getOrganizationId());
+        office.setOrganization(organization);
+        return officeDao.add(office);
     }
 }

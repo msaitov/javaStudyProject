@@ -36,8 +36,12 @@ public class EmployeeServiceImpl implements EmployeeService {
             return null;
         }
 
-        List<Employee> employeeList = employeeDao.getItems(employeeView);
+        Employee employee = mapperEmployee.map(employeeView);
+
+        List<Employee> employeeList = employeeDao.getItems(employee);
+
         List<EmployeeView> employeeViewList = mapperEmployee.mapAsList(employeeList);
+
         for (EmployeeView ev : employeeViewList) {
             ev.setOfficeId(null);
             ev.setPhone(null);
@@ -60,7 +64,31 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeView loadById(final Long id) {
         Employee employee = employeeDao.getItemById(id);
         EmployeeView employeeView = mapperEmployee.map(employee);
+        if (employeeView == null) {
+            return null;
+        }
         employeeView.setOfficeId(null);
         return employeeView;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public String update(final EmployeeView employeeView) {
+        Employee employee = mapperEmployee.map(employeeView);
+        return employeeDao.updateItem(employee);
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public String save(final EmployeeView employeeView) {
+        Employee employee = mapperEmployee.map(employeeView);
+        return employeeDao.add(employee);
     }
 }

@@ -5,12 +5,12 @@ import ru.msaitov.practice.view.OrganizationView;
 import java.util.List;
 
 /**
- * Сервис Organization
+ * Сервис organization
  */
 public interface OrganizationService {
 
     /**
-     * Получить список объектов Organization и смапить на OrganizationView
+     * Получить список объектов organization и смапить на OrganizationView
      * Все поля organizationView не равны null будут служить фильром для возврата списка объектов OrganizationView
      *
      * @param organizationView
@@ -19,10 +19,26 @@ public interface OrganizationService {
     List<OrganizationView> filter(OrganizationView organizationView);
 
     /**
-     * Получить Organization по идентификатору и смапить на OrganizationView
+     * Получить organization по идентификатору и смапить на OrganizationView
      *
      * @param id
      * @return
      */
     OrganizationView loadById(Long id);
+
+    /**
+     * Обновление Organization
+     *
+     * @param organizationView
+     * @return
+     */
+    String update(OrganizationView organizationView);
+
+    /**
+     * Сохранение Organization
+     *
+     * @param organizationView
+     * @return
+     */
+    String save(OrganizationView organizationView);
 }

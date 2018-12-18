@@ -25,4 +25,22 @@ public interface EmployeeService {
      * @return
      */
     EmployeeView loadById(Long id);
+
+    /**
+     * Обновление Employee
+     *
+     * @param employeeView
+     * @return
+     */
+    String update(EmployeeView employeeView);
+
+    /**
+     * Сохранение Employee
+     *
+     * @param employeeView
+     * @return
+     */
+    String save(EmployeeView employeeView);
+
+
 }

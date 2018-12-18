@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.msaitov.practice.controller.handleException.CustomNotFoundException;
 import ru.msaitov.practice.service.employee.EmployeeService;
 import ru.msaitov.practice.view.EmployeeView;
+import ru.msaitov.practice.view.general.GeneralView;
+import ru.msaitov.practice.view.general.ResponseView;
 
 import java.util.List;
 
@@ -34,9 +37,12 @@ public class EmployeeController {
      * @param employeeView
      * @return
      */
-    @PostMapping("api/employee/list")
-    public List<EmployeeView> employeeList(@RequestBody final EmployeeView employeeView) {
-        return employeeService.filter(employeeView);
+    @PostMapping("api/user/list")
+    public GeneralView employeeList(@RequestBody final EmployeeView employeeView) {
+        if (employeeView.getOfficeId() == null) {
+            throw new CustomNotFoundException("Поле officeId обязательно к заполнению");
+        }
+        return new GeneralView<List<EmployeeView>>().setData(employeeService.filter(employeeView));
     }
 
 
@@ -46,8 +52,48 @@ public class EmployeeController {
      * @param id
      * @return
      */
-    @GetMapping("api/employee/{id}")
-    public EmployeeView employeeId(@PathVariable final Long id) {
-        return employeeService.loadById(id);
+    @GetMapping("api/user/{id}")
+    public GeneralView employeeId(@PathVariable final Long id) {
+        EmployeeView employeeView = employeeService.loadById(id);
+        if (employeeView == null) {
+            throw new CustomNotFoundException("id не найдено");
+        }
+        return new GeneralView<EmployeeView>().setData(employeeView);
+
+    }
+
+    /**
+     * Обновление Employee по id
+     *
+     * @param employeeView
+     * @return
+     */
+    @PostMapping("api/user/update")
+    public GeneralView organizationUpdate(@RequestBody final EmployeeView employeeView) {
+        if (employeeView.getId() == null ||
+                employeeView.getFirstName() == null ||
+                employeeView.getPositionName() == null) {
+            throw new CustomNotFoundException("Поля id, firstName, position обязательны к заполнению");
+        }
+        return new GeneralView().setData(new ResponseView().setResult(employeeService.update(employeeView)));
+    }
+
+    /**
+     * Сохранить Employee
+     *
+     * @param employeeView
+     * @return
+     */
+    @PostMapping("api/user/save")
+    public GeneralView organizationSave(@RequestBody final EmployeeView employeeView) {
+        if (employeeView.getId() != null) {
+            throw new CustomNotFoundException("Поле id должно быть пустым, т.к. генерируется автоматически");
+        }
+        if (employeeView.getOfficeId() == null ||
+                employeeView.getFirstName() == null ||
+                employeeView.getPositionName() == null) {
+            throw new CustomNotFoundException("Поля officeId, firstName, position обязательны к заполнению");
+        }
+        return new GeneralView().setData(new ResponseView().setResult(employeeService.save(employeeView)));
     }
 }
