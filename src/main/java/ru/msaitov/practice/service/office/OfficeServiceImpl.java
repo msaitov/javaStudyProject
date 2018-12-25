@@ -3,6 +3,7 @@ package ru.msaitov.practice.service.office;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.msaitov.practice.dao.Switcher;
 import ru.msaitov.practice.dao.office.OfficeDao;
 import ru.msaitov.practice.model.Office;
 import ru.msaitov.practice.model.Organization;
@@ -21,8 +22,8 @@ public class OfficeServiceImpl implements OfficeService {
     private final MapperFacade mapperFacade;
 
     @Autowired
-    public OfficeServiceImpl(final OfficeDao officeDao, final MapperFacade mapperFacade) {
-        this.officeDao = officeDao;
+    public OfficeServiceImpl(final Switcher switcher, final MapperFacade mapperFacade) {
+        this.officeDao = switcher.getDaoFactory().getOfficeDao();
         this.mapperFacade = mapperFacade;
     }
 

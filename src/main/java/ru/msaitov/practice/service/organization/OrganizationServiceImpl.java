@@ -3,6 +3,7 @@ package ru.msaitov.practice.service.organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.msaitov.practice.dao.Switcher;
 import ru.msaitov.practice.dao.organization.OrganizationDao;
 import ru.msaitov.practice.model.Organization;
 import ru.msaitov.practice.model.mapper.MapperFacade;
@@ -20,8 +21,8 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final MapperFacade mapperFacade;
 
     @Autowired
-    public OrganizationServiceImpl(final OrganizationDao organizationDao, final MapperFacade mapperFacade) {
-        this.organizationDao = organizationDao;
+    public OrganizationServiceImpl(final Switcher switcher, final MapperFacade mapperFacade) {
+        this.organizationDao = switcher.getDaoFactory().getOrganizationDao();
         this.mapperFacade = mapperFacade;
     }
 

@@ -3,6 +3,7 @@ package ru.msaitov.practice.service.employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.msaitov.practice.dao.Switcher;
 import ru.msaitov.practice.dao.employee.EmployeeDao;
 import ru.msaitov.practice.model.employee.Employee;
 import ru.msaitov.practice.model.mapper.employee.MapperEmployee;
@@ -16,13 +17,14 @@ import java.util.List;
 @Repository
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeDao employeeDao;
+
     private final MapperEmployee mapperEmployee;
+    private final EmployeeDao employeeDao;
 
     @Autowired
-    public EmployeeServiceImpl(final EmployeeDao employeeDao, final MapperEmployee mapperEmployee) {
-        this.employeeDao = employeeDao;
+    public EmployeeServiceImpl(Switcher switcher, MapperEmployee mapperEmployee) {
         this.mapperEmployee = mapperEmployee;
+        this.employeeDao = switcher.getDaoFactory().getEmployeeDao();
     }
 
     /**
@@ -32,12 +34,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(readOnly = true)
     public List<EmployeeView> filter(final EmployeeView employeeView) {
 
+        if (employeeView == null) {
+            return null;
+        }
+
         if (employeeView.getOfficeId() == null) {
             return null;
         }
 
         Employee employee = mapperEmployee.map(employeeView);
 
+        //List<Employee> employeeList = employeeDao.getItems(employee);
         List<Employee> employeeList = employeeDao.getItems(employee);
 
         List<EmployeeView> employeeViewList = mapperEmployee.mapAsList(employeeList);

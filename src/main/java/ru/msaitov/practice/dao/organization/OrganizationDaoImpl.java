@@ -1,5 +1,7 @@
 package ru.msaitov.practice.dao.organization;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import ru.msaitov.practice.model.Organization;
 import ru.msaitov.practice.model.Organization_;
@@ -19,10 +21,12 @@ import java.util.List;
  * {@inheritDoc}
  */
 @Repository
+@Qualifier("OrganizationDaoImpl")
 public class OrganizationDaoImpl implements OrganizationDao {
 
     private final EntityManager em;
 
+    @Autowired
     public OrganizationDaoImpl(EntityManager em) {
         this.em = em;
     }
@@ -62,6 +66,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
      */
     @Override
     public Organization getItemById(final Long id) {
+        System.out.println("JPQL_CRITERIA");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Organization> cq = cb.createQuery(Organization.class);

@@ -73,7 +73,7 @@ public class OrganizationController {
                 organizationView.getInn() == null ||
                 organizationView.getKpp() == null ||
                 organizationView.getAddress() == null) {
-            throw new CustomNotFoundException("Поля id, name, nameFull, inn, kpp, address обязательны к заполнению");
+            throw new CustomNotFoundException("Поля id, name, fullName, inn, kpp, address обязательны к заполнению");
         }
         return new GeneralView().setData(new ResponseView().setResult(orgServ.update(organizationView)));
     }
