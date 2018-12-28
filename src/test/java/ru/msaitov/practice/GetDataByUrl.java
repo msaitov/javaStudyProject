@@ -22,8 +22,7 @@ public class GetDataByUrl<T> {
     private HttpHeaders headers = new HttpHeaders();
 
     /**
-     * Запрос который получает одиночный объект
-     *
+     * GET Запрос который получает одиночный объект
      * @param url
      * @param typeParameterClass Тип получаемых данных
      * @return
@@ -35,6 +34,23 @@ public class GetDataByUrl<T> {
         T tSingle = dataViewSingle.getData();
         return tSingle;
     }
+
+    /**
+     * GET Запрос который получает список
+     *
+     * @param url
+     * @param typeParameterClass Тип получаемых данных
+     * @return
+     */
+    public List<T> getListQueryGet(final String url, final ParameterizedTypeReference<DataViewList<T>> typeParameterClass) {
+        init();
+        ResponseEntity<DataViewList<T>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, typeParameterClass);
+        DataViewList<T> dataViewList = responseEntity.getBody();
+        List<T> tList = dataViewList.getData();
+        return tList;
+    }
+
+
 
     /**
      * Запрос который получает список объектов

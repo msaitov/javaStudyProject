@@ -2,7 +2,9 @@ package ru.msaitov.practice.dao.employee;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.msaitov.practice.model.employee.Citizenship;
 import ru.msaitov.practice.model.employee.Citizenship_;
+import ru.msaitov.practice.model.employee.DocCode;
 import ru.msaitov.practice.model.employee.DocCode_;
 import ru.msaitov.practice.model.employee.Employee;
 import ru.msaitov.practice.model.employee.Employee_;
@@ -167,5 +169,31 @@ public class EmployeeDaoImpl implements EmployeeDao {
             result = "failure";
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DocCode> getDocs() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<DocCode> cq = cb.createQuery(DocCode.class);
+        cq.from(DocCode.class);
+        TypedQuery<DocCode> query = em.createQuery(cq);
+        List<DocCode> docCodeList = query.getResultList();
+        return docCodeList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Citizenship> getСountries() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Citizenship> cq = cb.createQuery(Citizenship.class);
+        cq.from(Citizenship.class);
+        TypedQuery<Citizenship> query = em.createQuery(cq);
+        List<Citizenship> citizenshipList = query.getResultList();
+        return citizenshipList;
     }
 }

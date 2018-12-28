@@ -1,5 +1,7 @@
 package ru.msaitov.practice.dao.employee;
 
+import ru.msaitov.practice.model.employee.Citizenship;
+import ru.msaitov.practice.model.employee.DocCode;
 import ru.msaitov.practice.model.employee.Employee;
 
 import java.util.List;
@@ -26,7 +28,6 @@ public interface EmployeeDao {
 
     /**
      * Обновление Employee в базе данных
-     *
      * @param employee
      * @return
      */
@@ -34,10 +35,24 @@ public interface EmployeeDao {
 
     /**
      * Добавление Employee в базу данных
-     *
      * @param employee
      * @return
      */
     String add(Employee employee);
+
+    /**
+     * Получение справочника тип документов
+     *
+     * @return
+     */
+    List<DocCode> getDocs();
+
+    /**
+     * Получение справочника Гражданство
+     *
+     * @return
+     */
+    List<Citizenship> getСountries();
+
 
 }

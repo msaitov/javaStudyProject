@@ -6,7 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.msaitov.practice.dao.Switcher;
 import ru.msaitov.practice.dao.employee.EmployeeDao;
 import ru.msaitov.practice.model.employee.Employee;
+import ru.msaitov.practice.model.mapper.MapperFacade;
 import ru.msaitov.practice.model.mapper.employee.MapperEmployee;
+import ru.msaitov.practice.view.Countries;
+import ru.msaitov.practice.view.Docs;
 import ru.msaitov.practice.view.EmployeeView;
 
 import java.util.List;
@@ -19,11 +22,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     private final MapperEmployee mapperEmployee;
+    private final MapperFacade mapperFacade;
     private final EmployeeDao employeeDao;
 
     @Autowired
-    public EmployeeServiceImpl(Switcher switcher, MapperEmployee mapperEmployee) {
+    public EmployeeServiceImpl(MapperEmployee mapperEmployee, MapperFacade mapperFacade, Switcher switcher) {
         this.mapperEmployee = mapperEmployee;
+        this.mapperFacade = mapperFacade;
         this.employeeDao = switcher.getDaoFactory().getEmployeeDao();
     }
 
@@ -97,5 +102,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     public String save(final EmployeeView employeeView) {
         Employee employee = mapperEmployee.map(employeeView);
         return employeeDao.add(employee);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public List<Docs> getDocs() {
+        return mapperFacade.mapAsList(employeeDao.getDocs(), Docs.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public List<Countries> getСountries() {
+        return mapperFacade.mapAsList(employeeDao.getСountries(), Countries.class);
     }
 }

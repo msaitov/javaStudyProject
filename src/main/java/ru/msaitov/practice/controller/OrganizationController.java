@@ -98,4 +98,6 @@ public class OrganizationController {
         }
         return new GeneralView().setData(new ResponseView().setResult(orgServ.save(organizationView)));
     }
+
+
 }

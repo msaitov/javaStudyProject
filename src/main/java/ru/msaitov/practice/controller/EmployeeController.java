@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.msaitov.practice.controller.handleException.CustomNotFoundException;
 import ru.msaitov.practice.service.employee.EmployeeService;
+import ru.msaitov.practice.view.Countries;
+import ru.msaitov.practice.view.Docs;
 import ru.msaitov.practice.view.EmployeeView;
 import ru.msaitov.practice.view.general.GeneralView;
 import ru.msaitov.practice.view.general.ResponseView;
@@ -69,7 +71,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("api/user/update")
-    public GeneralView organizationUpdate(@RequestBody final EmployeeView employeeView) {
+    public GeneralView employeeUpdate(@RequestBody final EmployeeView employeeView) {
         if (employeeView.getId() == null ||
                 employeeView.getFirstName() == null ||
                 employeeView.getPositionName() == null) {
@@ -80,12 +82,11 @@ public class EmployeeController {
 
     /**
      * Сохранить Employee
-     *
      * @param employeeView
      * @return
      */
     @PostMapping("api/user/save")
-    public GeneralView organizationSave(@RequestBody final EmployeeView employeeView) {
+    public GeneralView employeeSave(@RequestBody final EmployeeView employeeView) {
         if (employeeView.getId() != null) {
             throw new CustomNotFoundException("Поле id должно быть пустым, т.к. генерируется автоматически");
         }
@@ -96,4 +97,26 @@ public class EmployeeController {
         }
         return new GeneralView().setData(new ResponseView().setResult(employeeService.save(employeeView)));
     }
+
+    /**
+     * Справочник Тип документов
+     *
+     * @return
+     */
+    @GetMapping("api/docs")
+    public GeneralView employeeDocs() {
+        return new GeneralView<List<Docs>>().setData(employeeService.getDocs());
+    }
+
+    /**
+     * Справочник Гражданство
+     *
+     * @return
+     */
+    @GetMapping("api/countries")
+    public GeneralView employeeСountries() {
+        return new GeneralView<List<Countries>>().setData(employeeService.getСountries());
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package ru.msaitov.practice.service.employee;
 
+import ru.msaitov.practice.view.Countries;
+import ru.msaitov.practice.view.Docs;
 import ru.msaitov.practice.view.EmployeeView;
 
 import java.util.List;
@@ -36,11 +38,23 @@ public interface EmployeeService {
 
     /**
      * Сохранение Employee
-     *
      * @param employeeView
      * @return
      */
     String save(EmployeeView employeeView);
 
+    /**
+     * Получение справочника тип документов
+     *
+     * @return
+     */
+    List<Docs> getDocs();
+
+    /**
+     * Получение справочника Гражданство
+     *
+     * @return
+     */
+    List<Countries> getСountries();
 
 }

@@ -5,6 +5,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.msaitov.practice.dao.additionalFunctions.AddingQueryString;
+import ru.msaitov.practice.model.employee.Citizenship;
+import ru.msaitov.practice.model.employee.DocCode;
 import ru.msaitov.practice.model.employee.Employee;
 
 import javax.persistence.EntityManager;
@@ -154,5 +156,29 @@ public class EmployeeDaoImplHQL implements EmployeeDao {
             result = "failure";
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DocCode> getDocs() {
+        Session session = em.unwrap(Session.class);
+        String strQuary = "FROM DocCode";
+        Query query = session.createQuery(strQuary);
+        List docCodeList = query.getResultList();
+        return docCodeList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Citizenship> getСountries() {
+        Session session = em.unwrap(Session.class);
+        String strQuary = "FROM Citizenship";
+        Query query = session.createQuery(strQuary);
+        List citizenshipList = query.getResultList();
+        return citizenshipList;
     }
 }
